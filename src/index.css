@@ -1,0 +1,15 @@
+@import 'bootstrap';
+@import 'bootstrap-icons';
+
+
+.books
+{
+  .card
+  {
+    img
+    {
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+  }
+}
