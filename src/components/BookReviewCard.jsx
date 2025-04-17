@@ -44,7 +44,7 @@ export default function BookReviewCard({ userReview }) {
         {/* username */}
         <div>Author: {username}</div>
         {/* created at */}
-        <div className="created-at">created at: {created_at}</div>
+        <div className="created-at">created at: {new Date(created_at).toLocaleString()}</div>
       </div>
 
     </div>
