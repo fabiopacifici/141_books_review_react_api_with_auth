@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BookReviewCard from '../components/BookReviewCard';
+import BookReviewForm from '../components/reviews/BookReviewForm';
 
 
 export default function SingleBook() {
@@ -71,68 +72,7 @@ export default function SingleBook() {
 
       <div className="container">
 
-        <div className="add-review">
-          <h3 className='mb-3'>Add your review</h3>
-
-          <form action="POST" className='mb-3'>
-
-
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">Username</label>
-              <input
-                type="text"
-                className="form-control"
-                name="username"
-                id="username"
-                aria-describedby="helpId"
-                placeholder="anonymous"
-              />
-
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="vote" className="form-label">Vote</label>
-              <input
-                type="number"
-                className="form-control"
-                name="vote"
-                id="vote"
-                min={1}
-                max={5}
-                aria-describedby="helpId"
-                placeholder=""
-              />
-
-            </div>
-
-
-            <div className="mb-3">
-              <label htmlFor="summary" className="form-label">Summary</label>
-              <input
-                type="text"
-                className="form-control"
-                name="summary"
-                id="summary"
-                aria-describedby="helpId"
-                placeholder="Write a summary..."
-              />
-
-            </div>
-
-
-            <div className="mb-3">
-              <label htmlFor="review" className="form-label">Review</label>
-              <textarea name='review' className="form-control" rows="3" placeholder="Write your review here..."></textarea>
-            </div>
-
-            <div className="mb-3">
-              <button type="submit" className="btn btn-primary mt-2">Submit Review</button>
-            </div>
-          </form>
-
-        </div>
-
-
+        <BookReviewForm bookId={book.id} />
 
         <hr />
 
