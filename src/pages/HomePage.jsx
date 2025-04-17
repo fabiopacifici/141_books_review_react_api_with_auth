@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BookCard from '../components/BookCard';
+import GlobalContext from '../contexts/GlobalContext';
+import { useContext } from 'react';
 
 export default function HomePage() {
   const [books, setBooks] = useState([]);
+  const { isLoading, setIsLoading } = useContext(GlobalContext)
+
+  console.log(isLoading, 'isLoading from HomePage');
 
 
   useEffect(() => {
-
     fetch('http://localhost:3000/api/v1/books')
       .then(response => response.json())
       .then(data => {
         console.log(data);
         setBooks(data);
 
+      }).then(() => {
+        setIsLoading(false)
       })
 
 

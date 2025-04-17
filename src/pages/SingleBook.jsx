@@ -2,9 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BookReviewCard from '../components/BookReviewCard';
 import BookReviewForm from '../components/reviews/BookReviewForm';
-
+import GlobalContext from '../contexts/GlobalContext';
+import { useContext } from 'react';
 
 export default function SingleBook() {
+
+  // get the global context
+  const { setIsLoading } = useContext(GlobalContext)
+
 
   // get the route param from the url
   const { id } = useParams()
@@ -26,8 +31,11 @@ export default function SingleBook() {
         }
         setBook(data);
 
+
       }).catch(err => {
         console.log('ERROR', err);
+      }).finally(() => {
+        setIsLoading(false)
       })
 
 
