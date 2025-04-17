@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import BookReviewCard from '../components/BookReviewCard';
 
 
@@ -11,6 +11,8 @@ export default function SingleBook() {
   // prepare the state variable to hold the book data
   const [book, setBook] = useState({});
 
+  // create an instance of the navigate function to redirect the user
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -18,6 +20,9 @@ export default function SingleBook() {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        if (data?.error) {
+          navigate('/404')
+        }
         setBook(data);
 
       }).catch(err => {
