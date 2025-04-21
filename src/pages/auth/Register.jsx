@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import GlobalContext from "../../contexts/GlobalContext";
+
 /**
  * Register component renders a registration form inside a card.
  * This component is part of the authentication flow.
  */
 export default function Register() {
-  const [form, setForm] = useState({
+
+
+  /*  const { setIsLoading } = useContext(GlobalContext); */
+  /* setIsLoading(false); */
+
+  const registrationUrl = "http://localhost:3000/register"; // Replace with your actual registration URL
+
+  const initialFormState = {
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
-  });
+  }
+  const [form, setForm] = useState(initialFormState);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,6 +29,31 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle registration logic here
+
+    console.log("Form submitted:", form);
+
+
+
+    fetch(registrationUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(form)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Registration response:", data);
+      })
+      .catch(error => {
+        console.error("Error during login:", error);
+      })
+      .finally(() => {
+        setForm(initialFormState);
+      })
+
+
   };
 
   return (
@@ -35,6 +70,7 @@ export default function Register() {
               name="username"
               value={form.username}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -46,6 +82,7 @@ export default function Register() {
               id="email"
               name="email"
               value={form.email}
+              autoComplete="off"
               onChange={handleChange}
               required
             />

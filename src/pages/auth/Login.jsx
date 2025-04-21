@@ -6,12 +6,18 @@ import { Link } from "react-router-dom";
  * This component is part of the authentication flow.
  */
 export default function Login() {
-  const [form, setForm] = useState({
+
+
+  const loginUrl = "http://localhost:3000/login"; // Replace with your actual registration URL
+
+  const initialFormState = {
 
     email: "",
     password: "",
 
-  });
+  }
+
+  const [form, setForm] = useState(initialFormState);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,7 +25,30 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle registration logic here
+    // Handle login logic here
+
+    console.log("Form submitted:", form);
+
+
+
+    fetch(loginUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(form)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Login response:", data);
+      })
+      .catch(error => {
+        console.error("Error during login:", error);
+      })
+      .finally(() => {
+        setForm(initialFormState)
+      })
   };
 
   return (
