@@ -15,40 +15,43 @@ import AuthLayout from "./layouts/AuthLayout.jsx"
 import CreateBook from "./pages/admin/CreateBook.jsx"
 
 import GlobalContext from "./contexts/GlobalContext.jsx"
+import { AuthProvide } from "./contexts/AuthContext.jsx"
 
 function App() {
 
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
 
-    <GlobalContext.Provider value={{ isLoading, setIsLoading }}>
-      <BrowserRouter>
-        <Routes>
-          <Route Component={DefaultLayout}>
+    <AuthProvide>
+      <GlobalContext.Provider value={{ isLoading, setIsLoading }}>
+        <BrowserRouter>
+          <Routes>
+            <Route Component={DefaultLayout}>
 
-            <Route path="/" Component={HomePage} />
-            <Route path="/books/:id" Component={SingleBook} />
+              <Route path="/" Component={HomePage} />
+              <Route path="/books/:id" Component={SingleBook} />
 
-            <Route path="/*" Component={NotFound} />
-
-
-            {/* Auth routes */}
-            <Route path="/register" Component={Register} />
-            <Route path="/login" Component={Login} />
-
-          </Route>
+              <Route path="/*" Component={NotFound} />
 
 
-          <Route Component={AuthLayout} >
-            <Route path="/admin" Component={Admin} />
-            <Route path="/admin/books/create" Component={CreateBook} />
-          </Route>
+              {/* Auth routes */}
+              <Route path="/register" Component={Register} />
+              <Route path="/login" Component={Login} />
+
+            </Route>
 
 
-        </Routes>
-      </BrowserRouter>
-    </GlobalContext.Provider >
+            <Route Component={AuthLayout} >
+              <Route path="/admin" Component={Admin} />
+              <Route path="/admin/books/create" Component={CreateBook} />
+            </Route>
+
+
+          </Routes>
+        </BrowserRouter>
+      </GlobalContext.Provider >
+    </AuthProvide>
   )
 
 }

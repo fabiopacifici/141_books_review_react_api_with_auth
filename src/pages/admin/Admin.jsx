@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+
 
 export default function Admin() {
   const [books, setBooks] = useState([]);
-
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
+
+    if (!user) {
+      navigate('/login')
+
+    }
+
+
     fetch('http://localhost:3000/api/v1/books')
       .then(response => response.json())
       .then(data => {
@@ -20,10 +30,12 @@ export default function Admin() {
 
 
 
+
+
   return (
     <div className="container mt-5">
       <header className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Admin</h1>
+        <h1>{user && `Welcome ${user?.username}`}</h1> {/* Displaying the username */}
         <Link className="btn btn-primary" to="/admin/books/create">Add Book</Link>
       </header>
 

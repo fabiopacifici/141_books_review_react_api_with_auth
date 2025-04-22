@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 /**
  * Login component renders a login form inside a card.
@@ -7,8 +8,9 @@ import { Link } from "react-router-dom";
  */
 export default function Login() {
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const loginUrl = "http://localhost:3000/login"; // Replace with your actual registration URL
 
   const initialFormState = {
 
@@ -29,26 +31,12 @@ export default function Login() {
 
     console.log("Form submitted:", form);
 
-
-
-    fetch(loginUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(form)
-    })
-      .then(res => res.json())
+    login(form.email, form.password)
       .then(data => {
-        console.log("Login response:", data);
+        if (data.user) navigate('/admin')
+        else alert("Invalid credentials")
       })
-      .catch(error => {
-        console.error("Error during login:", error);
-      })
-      .finally(() => {
-        setForm(initialFormState)
-      })
+
   };
 
   return (

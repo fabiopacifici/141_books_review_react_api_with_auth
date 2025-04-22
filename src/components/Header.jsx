@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
 
 export default function Header() {
+  const { user, logout } = useAuth();
 
 
   return (
@@ -10,8 +12,27 @@ export default function Header() {
           <NavLink className="nav-link" to="/">Home</NavLink>
 
           <div className="ms-auto d-flex gap-2">
-            <NavLink className="nav-link" to="/login">Login</NavLink>
-            <NavLink className="nav-link" to="/register">Register</NavLink>
+
+            {
+              !user && (
+                <>
+                  <NavLink className="nav-link" to="/login">Login</NavLink>
+                  <NavLink className="nav-link" to="/register">Register</NavLink>
+                </>
+              )
+            }
+
+
+            {
+              user && (
+                <>
+                  <NavLink className="nav-link" to="/admin">Admin</NavLink>
+                  <button className="nav-link" onClick={logout}>Logout</button> {/* Added Logout button */}
+                </>
+              )
+            }
+
+
           </div>
 
         </div>

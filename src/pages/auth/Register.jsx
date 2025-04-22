@@ -1,12 +1,18 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GlobalContext from "../../contexts/GlobalContext";
+import { useAuth } from "../../contexts/AuthContext";
+
 
 /**
  * Register component renders a registration form inside a card.
  * This component is part of the authentication flow.
  */
 export default function Register() {
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
 
 
   /*  const { setIsLoading } = useContext(GlobalContext); */
@@ -45,6 +51,14 @@ export default function Register() {
       .then(res => res.json())
       .then(data => {
         console.log("Registration response:", data);
+        // check if the data contains a user object
+        // if so call the login function with the email and password
+        // and navigate to the admin page
+        if (data.user) {
+          login(form.email, form.password).then(() => navigate('/admin'))
+        }
+
+
       })
       .catch(error => {
         console.error("Error during login:", error);
