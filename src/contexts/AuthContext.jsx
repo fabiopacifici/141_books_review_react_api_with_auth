@@ -6,25 +6,34 @@ export function AuthProvide({ children }) {
   const loginUrl = "http://localhost:3000/login"; // Replace with your actual registration URL
   const [user, setUser] = useState(null);
 
-
-  /* Check if the user is already logged in  */
+  /* Check if the user is already logged in */
   useEffect(() => {
-
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
-      console.log(JSON.parse(storedUser));
-      const { email, password } = JSON.parse(storedUser)
+      // Directly set the stored user first
+      setUser(JSON.parse(storedUser))
 
-      login(email, password)
-        .then(data => {
-          if (data.user) {
-            setUser(JSON.parse(storedUser)) // '{usenrname: "John"}' => {username: "John"}
+      // Verify the session is still valid
+      fetch(loginUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(JSON.parse(storedUser))
+      })
+        .then(res => {
+          if (!res.ok) {
+            // If session is invalid, log out
+            logout();
           }
         })
+        .catch(() => {
+          // On error, log out
+          logout();
+        });
     }
-
   }, [])
-
 
   function login(email, password) {
 
@@ -41,7 +50,6 @@ export function AuthProvide({ children }) {
       .then(data => {
         if (data.user) setUser(data.user);
 
-
         // Store the user in local storage
         localStorage.setItem('user', JSON.stringify(data.user));
         return data
@@ -55,7 +63,6 @@ export function AuthProvide({ children }) {
     localStorage.removeItem('user')
   }
 
-
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}
@@ -63,7 +70,6 @@ export function AuthProvide({ children }) {
   )
 
 }
-
 
 export function useAuth() {
   return useContext(AuthContext);
