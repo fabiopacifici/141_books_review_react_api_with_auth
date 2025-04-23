@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CreateBook = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     abstract: '',
@@ -26,14 +28,12 @@ const CreateBook = () => {
       .then(res => res.json())
       .then(data => {
         console.log(data, 'Book created successfully');
+        navigate('/admin');
       })
       .catch(err => {
         console.error(err, 'Error creating book');
       })
   }
-
-
-
 
   return (
     <div className="container py-4">
